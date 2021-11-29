@@ -16,9 +16,10 @@ const schema = Joi.object({
         }),
 
     email: Joi.string()
+        .email()
         .required()
         .messages({
-            'string.empty': msg, 'any.required': msg,
+            'string.empty': msg, 'any.required': msg, 'string.email': msg,
         }),
 });
 

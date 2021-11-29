@@ -1,11 +1,13 @@
 const userServices = require('../services/userServices');
 
 const create = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, password, email } = req.body;
 
-    const data = await userServices(name, email, password);
+    const data = await userServices.create(name, password, email);
 
-    res.status(200).json(data);
+    if (data.error) return res.status(400).json({ message: data.error.message });
+
+    res.status(201).json(data);
 };
 
 module.exports = { create };
