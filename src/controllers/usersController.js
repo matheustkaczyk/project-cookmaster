@@ -5,9 +5,9 @@ const create = async (req, res) => {
 
     const data = await userServices.create(name, password, email);
 
-    if (data.error) return res.status(400).json({ message: data.error.message });
+    if (data.error) return res.status(data.code).json({ message: data.error.message });
 
-    if (data.err) return res.status(409).json({ message: data.err.message });
+    // if (data.err) return res.status(409).json({ message: data.err.message });
 
     res.status(201).json(data);
 };
