@@ -1,4 +1,12 @@
+const jwt = require('jsonwebtoken');
 const userServices = require('../services/userServices');
+
+const secret = 'secreto';
+
+const jwtConfig = {
+    expiresIn: '7d',
+    algorithm: 'HS256',
+};
 
 const create = async (req, res) => {
     const { name, password, email } = req.body;
@@ -7,9 +15,19 @@ const create = async (req, res) => {
 
     if (data.error) return res.status(data.code).json({ message: data.error.message });
 
-    // if (data.err) return res.status(409).json({ message: data.err.message });
-
     res.status(201).json(data);
 };
 
-module.exports = { create };
+const login = async (req, res) => {
+    const { email, password } = req.body;
+
+    const data = await userServices.login(email, password);
+
+    if (data.error) return res.status(data.code).json({ message: data.error.message });
+
+    const tokenKey = jwt.sign({ data }, secret, jwtConfig);
+
+    res.status(200).json({ token: tokenKey });
+};
+
+module.exports = { create, login };

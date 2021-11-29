@@ -1,4 +1,5 @@
 const userValidation = require('../validations/userValidations');
+const loginValidation = require('../validations/loginValidation');
 const userModel = require('../models/usersModel');
 
 const create = async (name, password, email) => {
@@ -14,4 +15,17 @@ const create = async (name, password, email) => {
     return userModel.create(name, password, email);
 };
 
-module.exports = { create };
+const login = async (email, password) => {
+    const validation = loginValidation(email, password);
+    const emailValidation = await userModel.findByEmail(email);
+
+    if (validation.error) return ({ code: 401, ...validation });
+    if (emailValidation.length <= 0 || emailValidation[0].password !== password) {
+    return (
+        { code: 401, error: { message: 'Incorrect username or password' } }); 
+    }
+
+    return true;
+};
+
+module.exports = { create, login };
