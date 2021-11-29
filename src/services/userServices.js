@@ -6,7 +6,7 @@ const create = async (name, password, email) => {
     const emailValidation = await userModel.findByEmail(email);
 
     if (validation.error) return validation;
-    if (emailValidation.length > 0) return ({ error: { message: 'Email already registered' } });
+    if (emailValidation.length > 0) return ({ err: { message: 'Email already registered' } });
 
     return userModel.create(name, password, email);
 };
