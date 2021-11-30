@@ -77,4 +77,24 @@ const updateRecipeById = async (id, body, user) => {
     );
 };
 
-module.exports = { create, login, recipes, getRecipes, getRecipesById, updateRecipeById };
+const deleteRecipeById = async (id, user) => {
+    const recipe = await userModel.getRecipesById(id);
+    const { role, userId } = recipe[0];
+    const { _id } = user;
+
+    if (userId === _id || role === 'admin') {
+        return userModel.deleteRecipeById(id);
+    }
+
+    return ({ code: 401 });
+};
+
+module.exports = {
+    create,
+    login,
+    recipes,
+    getRecipes,
+    getRecipesById,
+    updateRecipeById,
+    deleteRecipeById,
+};

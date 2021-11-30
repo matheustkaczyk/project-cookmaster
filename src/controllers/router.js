@@ -11,5 +11,6 @@ router.post('/recipes', jwtValidation, usersController.recipes);
 router.get('/recipes', usersController.getRecipes);
 router.get('/recipes/:id', usersController.getRecipesById);
 router.put('/recipes/:id', jwtValidation, usersController.updateRecipeById);
+router.delete('/recipes/:id', jwtValidation, usersController.deleteRecipeById);
 
 module.exports = router;
