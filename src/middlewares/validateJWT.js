@@ -11,6 +11,7 @@ const validateJWT = (req, res, next) => {
         const decoded = jwt.verify(token, secret);
 
         req.user = decoded.data;
+
         next();
     } catch (error) {
         return res.status(401).json({ message: error.message });
