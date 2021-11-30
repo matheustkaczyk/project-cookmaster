@@ -1,5 +1,6 @@
 const userValidation = require('../validations/userValidations');
 const loginValidation = require('../validations/loginValidation');
+const recipesValidation = require('../validations/recipesValidation');
 const userModel = require('../models/usersModel');
 
 const create = async (name, password, email) => {
@@ -25,7 +26,16 @@ const login = async (email, password) => {
         { code: 401, error: { message: 'Incorrect username or password' } }); 
     }
 
-    return true;
+    return emailValidation;
 };
 
-module.exports = { create, login };
+const recipes = async (name, ingredients, preparation, id) => {
+    const validation = recipesValidation(name, ingredients, preparation);
+
+    if (validation.error) return validation;
+
+    const data = await userModel.recipes(name, ingredients, preparation, id);
+    return data;
+};
+
+module.exports = { create, login, recipes };

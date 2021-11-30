@@ -5,7 +5,6 @@ const secret = 'secreto';
 
 const jwtConfig = {
     expiresIn: '7d',
-    algorithm: 'HS256',
 };
 
 const create = async (req, res) => {
@@ -25,9 +24,20 @@ const login = async (req, res) => {
 
     if (data.error) return res.status(data.code).json({ message: data.error.message });
 
-    const tokenKey = jwt.sign({ data }, secret, jwtConfig);
+    const tokenKey = jwt.sign({ data: data[0] }, secret, jwtConfig);
 
     res.status(200).json({ token: tokenKey });
 };
 
-module.exports = { create, login };
+const recipes = async (req, res) => {
+    const { name, ingredients, preparation } = req.body;
+    const { _id: id } = req.user;
+
+    const data = await userServices.recipes(name, ingredients, preparation, id);
+
+    if (data.error) return res.status(data.code).json({ message: data.error.message });
+
+    res.status(201).json(data);
+};
+
+module.exports = { create, login, recipes };
