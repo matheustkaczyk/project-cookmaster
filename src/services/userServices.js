@@ -58,4 +58,23 @@ const getRecipesById = async (id) => {
     }
 };
 
-module.exports = { create, login, recipes, getRecipes, getRecipesById };
+const updateRecipeById = async (id, body, user) => {
+    const { name, ingredients, preparation } = body;
+    const { _id } = user;
+
+    const recipe = await userModel.getRecipesById(id);
+    const { userId } = recipe[0];
+
+    if (userId === _id || user.role === 'admin') {
+        const data = await userModel.updateRecipeById(id, name, ingredients, preparation);
+        if (data.modifiedCount > 0) {
+            return ({ _id: id, ...body, userId });
+        }
+    }
+
+    return (
+        { code: 404, error: { message: 'missing auth token' } }
+    );
+};
+
+module.exports = { create, login, recipes, getRecipes, getRecipesById, updateRecipeById };

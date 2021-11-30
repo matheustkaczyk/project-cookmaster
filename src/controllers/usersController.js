@@ -58,4 +58,14 @@ const getRecipesById = async (req, res) => {
     res.status(200).json(data[0]);
 };
 
-module.exports = { create, login, recipes, getRecipes, getRecipesById };
+const updateRecipeById = async (req, res) => {
+    const { id } = req.params;
+
+    const data = await userServices.updateRecipeById(id, req.body, req.user);
+
+    if (data.error) return res.status(data.code).json({ message: data.error.message });
+
+    res.status(200).json(data);
+};
+
+module.exports = { create, login, recipes, getRecipes, getRecipesById, updateRecipeById };

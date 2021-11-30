@@ -10,5 +10,6 @@ router.post('/login', usersController.login);
 router.post('/recipes', jwtValidation, usersController.recipes);
 router.get('/recipes', usersController.getRecipes);
 router.get('/recipes/:id', usersController.getRecipesById);
+router.put('/recipes/:id', jwtValidation, usersController.updateRecipeById);
 
 module.exports = router;
