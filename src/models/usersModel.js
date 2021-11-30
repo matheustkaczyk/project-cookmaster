@@ -28,4 +28,8 @@ const getRecipes = async () => getConnection()
     .then((db) => db.collection('recipes').find({}).toArray())
     .then((result) => result);
 
-module.exports = { create, findByEmail, recipes, getRecipes };
+const getRecipesById = async (id) => getConnection()
+        .then((db) => db.collection('recipes').find({ _id: ObjectId(id) }).toArray())
+        .then((result) => result);
+
+module.exports = { create, findByEmail, recipes, getRecipes, getRecipesById };

@@ -46,4 +46,16 @@ const getRecipes = async () => {
     return data;
 };
 
-module.exports = { create, login, recipes, getRecipes };
+const getRecipesById = async (id) => {
+    try {
+        const data = await userModel.getRecipesById(id);
+    
+        if (data.length <= 0) return ({ code: 404, error: { message: 'recipe not found' } });
+    
+        return data;
+    } catch (error) {
+        return ({ code: 404, error: { message: 'recipe not found' } });
+    }
+};
+
+module.exports = { create, login, recipes, getRecipes, getRecipesById };
