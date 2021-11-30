@@ -38,4 +38,12 @@ const recipes = async (name, ingredients, preparation, id) => {
     return data;
 };
 
-module.exports = { create, login, recipes };
+const getRecipes = async () => {
+    const data = await userModel.getRecipes();
+
+    if (data.length <= 0) return ({ code: 400, error: { message: 'No recipes found' } });
+
+    return data;
+};
+
+module.exports = { create, login, recipes, getRecipes };

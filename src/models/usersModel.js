@@ -10,7 +10,8 @@ const findByEmail = async (email) => getConnection()
     .then((result) => result);
 
 const recipes = async (name, ingredients, preparation, id) => getConnection()
-    .then((db) => db.collection('recipes').insertOne({ name, ingredients, preparation }))
+    .then((db) => db.collection('recipes')
+    .insertOne({ name, ingredients, preparation, userId: id }))
     .then((result) => (
         { 
             recipe: { 
@@ -23,4 +24,8 @@ const recipes = async (name, ingredients, preparation, id) => getConnection()
         }
     ));
 
-module.exports = { create, findByEmail, recipes };
+const getRecipes = async () => getConnection()
+    .then((db) => db.collection('recipes').find({}).toArray())
+    .then((result) => result);
+
+module.exports = { create, findByEmail, recipes, getRecipes };

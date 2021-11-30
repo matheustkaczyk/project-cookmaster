@@ -40,4 +40,12 @@ const recipes = async (req, res) => {
     res.status(201).json(data);
 };
 
-module.exports = { create, login, recipes };
+const getRecipes = async (_req, res) => {
+    const data = await userServices.getRecipes();
+
+    if (data.error) return res.status(data.code).json({ message: data.error.message });
+
+    res.status(200).json(data);
+};
+
+module.exports = { create, login, recipes, getRecipes };
