@@ -89,6 +89,22 @@ const deleteRecipeById = async (id, user) => {
     return ({ code: 401 });
 };
 
+const updateRecipe = async (id, user) => {
+    const recipe = await userModel.getRecipesById(id);
+    const { id: userId, role } = user;
+
+    const newRecipe = {
+        ...recipe[0],
+        image: `localhost:3000/src/uploads/${id}.jpeg`,
+    };
+
+    if (userId === recipe.userId || role === 'admin') {
+        await userModel.updateRecipe(id, newRecipe);
+    }
+
+    return newRecipe;
+};
+
 module.exports = {
     create,
     login,
@@ -97,4 +113,5 @@ module.exports = {
     getRecipesById,
     updateRecipeById,
     deleteRecipeById,
+    updateRecipe,
 };
